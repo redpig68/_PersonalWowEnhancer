@@ -117,6 +117,7 @@ end)
 
 -- 원하는 전체 UI 폰트 크기 및 스타일
 local GLOBAL_FONT_SIZE = 16
+local GLOBAL_FONT_SIZE_SMALL = 14
 local GLOBAL_FONT_FLAGS = "OUTLINE"
 
 -- 주요 폰트 오브젝트 목록
@@ -171,7 +172,51 @@ local fontObjects = {
     GameFontNormalHugeOutline2,
     GameFontNormalHugeOutline3,
     GameFontNormalHugeOutline4,
+    -- 탭 폰트
+    GameFontHighlightSmallLeft,
+    GameFontHighlightSmallRight,
+    GameFontHighlightSmallCenter,
     -- 필요시 추가
+}
+
+local fontObjects_Inner = {
+    -- 전문기술 창, 캐릭터창, 탭 등에서 자주 쓰이는 폰트 오브젝트 추가
+    GameFontHighlightSmallOutline,
+    GameFontNormalLeft,
+    GameFontNormalRight,
+    GameFontNormalCenter,
+    GameFontHighlightLeft,
+    GameFontHighlightRight,
+    GameFontHighlightCenter,
+    GameFontDisableLeft,
+    GameFontDisableRight,
+    GameFontDisableCenter,
+    GameFontNormalLargeLeft,
+    GameFontNormalLargeRight,
+    GameFontNormalLargeCenter,
+    GameFontHighlightLargeLeft,
+    GameFontHighlightLargeRight,
+    GameFontHighlightLargeCenter,
+    GameFontDisableLargeLeft,
+    GameFontDisableLargeRight,
+    GameFontDisableLargeCenter,
+    -- 전문기술/캐릭터창/스탯/탭 등에서 자주 쓰임
+    PaperDollTitleFont,
+    PaperDollLabelFont,
+    PaperDollFontNormalSmall,
+    PaperDollFontNormalLarge,
+    PaperDollFontHighlightSmall,
+    PaperDollFontHighlightLarge,
+    -- 전문기술 창
+    ProfessionsRecipeNameFont,
+    ProfessionsRecipeSubTextFont,
+    ProfessionsRecipeTextFont,
+    ProfessionsRecipeHighlightFont,
+    ProfessionsRecipeErrorTextFont,
+    ProfessionsRecipeDescriptionFont,
+    ProfessionsRecipeReagentFont,
+    ProfessionsRecipeReagentHighlightFont,
+    ProfessionsRecipeReagentErrorFont,
 }
 
 -- 폰트 오브젝트의 폰트와 크기 일괄 변경
@@ -179,6 +224,44 @@ local function UpdateGlobalUIFont()
     for _, fontObj in ipairs(fontObjects) do
         if fontObj and fontObj.SetFont then
             fontObj:SetFont(FONT_PATH, GLOBAL_FONT_SIZE, GLOBAL_FONT_FLAGS)
+        end
+    end
+
+    for _, fontObjects_Inner in ipairs(fontObjects_Inner) do
+        if fontObjects_Inner and fontObjects_Inner.SetFont then
+            fontObjects_Inner:SetFont(FONT_PATH, GLOBAL_FONT_SIZE_SMALL, GLOBAL_FONT_FLAGS)
+        end
+    end
+
+    -- 전문기술 창 내부 동적 항목(레시피 리스트 등) 처리
+    if ProfessionsFrame and ProfessionsFrame.RecipeList and ProfessionsFrame.RecipeList.ScrollBox then
+        local scrollBox = ProfessionsFrame.RecipeList.ScrollBox
+        for i = 1, #scrollBox:GetFrames() do
+            local button = scrollBox:GetFrames()[i]
+            if button and button.Text then
+                button.Text:SetFont(FONT_PATH, GLOBAL_FONT_SIZE_SMALL, GLOBAL_FONT_FLAGS)
+            end
+        end
+    end
+
+    -- 캐릭터창 스탯(종합, 방어, 공격력 등) 항목 처리
+    if PaperDollFrame then
+        for _, region in ipairs({PaperDollFrame:GetRegions()}) do
+            if region and region.SetFont then
+                region:SetFont(FONT_PATH, GLOBAL_FONT_SIZE_SMALL, GLOBAL_FONT_FLAGS)
+            end
+        end
+    end
+
+    -- 탭 글자(예: CharacterFrameTab1 등)
+    for i = 1, 10 do
+        local tab = _G["CharacterFrameTab"..i]
+        if tab and tab.Text then
+            tab.Text:SetFont(FONT_PATH, GLOBAL_FONT_SIZE, GLOBAL_FONT_FLAGS)
+        end
+        local profTab = _G["ProfessionsFrameTab"..i]
+        if profTab and profTab.Text then
+            profTab.Text:SetFont(FONT_PATH, GLOBAL_FONT_SIZE, GLOBAL_FONT_FLAGS)
         end
     end
 end
