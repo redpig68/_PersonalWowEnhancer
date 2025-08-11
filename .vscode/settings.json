@@ -20,6 +20,9 @@
         "ProfessionsFrame",
         "CharacterStatsPane",
         "CharacterFrame",
-        "PlayerFrame"
+        "PlayerFrame",
+        "MacroFrame",
+        "MacroFrameText",
+        "MacroFrameScrollFrame"
     ]
 }

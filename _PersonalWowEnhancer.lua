@@ -49,25 +49,20 @@ f:SetScript("OnEvent", UpdateActionBarFonts)
 ----------------------------------------------------------------------------------------------------
 -- 2. 화면에 캐릭터의 이동속도 표시
 
--- SavedVariables로 speedFramePosition 사용 (TOC에 "## SavedVariables: speedFramePosition" 추가 필요)
-local speedFramePosition = speedFramePosition or {}
+-- SavedVariables로 speedFramePosition 사용 (TOC에 반드시 "## SavedVariables: speedFramePosition" 선언 필요)
+if not speedFramePosition then
+    speedFramePosition = {}
+end
 
--- 이동속도 표시용 프레임 생성 (speedFrame을 먼저 선언)
+-- 이동속도 표시용 프레임 생성
 local speedFrame = CreateFrame("Frame", nil, UIParent)
 speedFrame:SetSize(120, 30)
 
--- 위치 저장 함수
-local function SaveSpeedFramePosition()
-    local point, _, relativePoint, xOfs, yOfs = speedFrame:GetPoint()
-    speedFramePosition.point = point
-    speedFramePosition.relativePoint = relativePoint
-    speedFramePosition.xOfs = xOfs
-    speedFramePosition.yOfs = yOfs
-end
-
 -- 위치 복원 함수
 local function RestoreSpeedFramePosition()
-    if speedFramePosition.point then
+    -- SavedVariables는 애드온이 완전히 로드된 후에만 값이 들어옴
+    -- 따라서 PLAYER_LOGIN 이벤트에서 복원해야 함
+    if speedFramePosition and speedFramePosition.point then
         speedFrame:ClearAllPoints()
         speedFrame:SetPoint(
             speedFramePosition.point,
@@ -81,7 +76,22 @@ local function RestoreSpeedFramePosition()
     end
 end
 
-RestoreSpeedFramePosition()
+-- 위치 저장 함수
+local function SaveSpeedFramePosition()
+    if not speedFramePosition then speedFramePosition = {} end
+    local point, _, relativePoint, xOfs, yOfs = speedFrame:GetPoint()
+    speedFramePosition.point = point
+    speedFramePosition.relativePoint = relativePoint
+    speedFramePosition.xOfs = xOfs
+    speedFramePosition.yOfs = yOfs
+end
+
+-- PLAYER_LOGIN 이벤트에서 위치 복원
+local speedFrameEventFrame = CreateFrame("Frame")
+speedFrameEventFrame:RegisterEvent("PLAYER_LOGIN")
+speedFrameEventFrame:SetScript("OnEvent", function()
+    RestoreSpeedFramePosition()
+end)
 
 speedFrame.text = speedFrame:CreateFontString(nil, "OVERLAY")
 speedFrame.text:SetFont(FONT_PATH, 16, FONT_FLAGS)
