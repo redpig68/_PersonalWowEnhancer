@@ -2,6 +2,7 @@
 --- 별도 애드온 설치하기 곤란하여 직접 제작한 애드온
 --- 1. 행동단축바의 글씨 크기 변경
 --- 2. 화면에 캐릭터의 이동속도 표시
+--- 3. 대부분의 UI 요소(대화창, 옵션창, 다이얼로그 버튼, 캐릭터 창 등) 글씨 크기 조정
 ----------------------------------------------------------------------------------------------------
 
 -- 1. 행동단축바의 글씨 크기 변경
@@ -108,4 +109,83 @@ end
 
 speedFrame:SetScript("OnUpdate", function(self, elapsed)
     UpdateSpeed()
+end)
+
+----------------------------------------------------------------------------------------------------
+--- 3. 대부분의 UI 요소(대화창, 옵션창, 다이얼로그 버튼, 캐릭터 창 등) 글씨 크기 조정
+----------------------------------------------------------------------------------------------------
+
+-- 원하는 전체 UI 폰트 크기 및 스타일
+local GLOBAL_FONT_SIZE = 16
+local GLOBAL_FONT_FLAGS = "OUTLINE"
+
+-- 주요 폰트 오브젝트 목록
+local fontObjects = {
+    GameFontNormal,
+    GameFontHighlight,
+    GameFontDisable,
+    GameFontGreen,
+    GameFontRed,
+    GameFontWhite,
+    GameFontBlack,
+    GameFontDarkGray,
+    GameFontNormalSmall,
+    GameFontHighlightSmall,
+    GameFontDisableSmall,
+    GameFontNormalLarge,
+    GameFontHighlightLarge,
+    GameFontDisableLarge,
+    GameFontNormalHuge,
+    GameFontHighlightHuge,
+    GameFontDisableHuge,
+    ChatFontNormal,
+    NumberFontNormal,
+    NumberFontNormalSmall,
+    NumberFontNormalLarge,
+    NumberFontNormalHuge,
+    SystemFont_Shadow_Med1,
+    SystemFont_Shadow_Med2,
+    SystemFont_Shadow_Med3,
+    SystemFont_Shadow_Small,
+    SystemFont_Small,
+    SystemFont_Tiny,
+    SystemFont_Med1,
+    SystemFont_Med2,
+    SystemFont_Med3,
+    SystemFont_Huge1,
+    SystemFont_Huge2,
+    SystemFont_Huge4,
+    QuestFont,
+    QuestFont_Large,
+    QuestFont_Shadow_Huge,
+    QuestFont_Shadow_Small,
+    QuestFont_Super_Huge,
+    DialogButtonNormalText,
+    DialogButtonHighlightText,
+    GameFontNormalMed3,
+    GameFontNormalSmall2,
+    GameFontNormalLarge2,
+    GameFontNormalHuge2,
+    GameFontNormalHuge3,
+    GameFontNormalHuge4,
+    GameFontNormalHugeOutline2,
+    GameFontNormalHugeOutline3,
+    GameFontNormalHugeOutline4,
+    -- 필요시 추가
+}
+
+-- 폰트 오브젝트의 폰트와 크기 일괄 변경
+local function UpdateGlobalUIFont()
+    for _, fontObj in ipairs(fontObjects) do
+        if fontObj and fontObj.SetFont then
+            fontObj:SetFont(FONT_PATH, GLOBAL_FONT_SIZE, GLOBAL_FONT_FLAGS)
+        end
+    end
+end
+
+-- UI 로딩 후 폰트 적용
+local globalFontFrame = CreateFrame("Frame")
+globalFontFrame:RegisterEvent("PLAYER_LOGIN")
+globalFontFrame:SetScript("OnEvent", function()
+    UpdateGlobalUIFont()
 end)
