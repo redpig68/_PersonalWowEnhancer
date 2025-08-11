@@ -1,0 +1,11 @@
+## Interface: 110107, 110200
+## Title: _PersonalWowEnhancer
+## Notes: 
+## 			1. Change font and size of action bar hotkey and macro text
+##			2. 캐릭터 창에 이동속도 보이기
+##			3. Macro창에서 보여지는 매크로 갯수 늘리기
+## Author: GPT-4.1
+## Version: 1.0
+## SavedVariables: speedFramePosition
+
+_PersonalWowEnhancer.lua
