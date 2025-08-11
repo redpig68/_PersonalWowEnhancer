@@ -227,9 +227,9 @@ local function UpdateGlobalUIFont()
         end
     end
 
-    for _, fontObjects_Inner in ipairs(fontObjects_Inner) do
-        if fontObjects_Inner and fontObjects_Inner.SetFont then
-            fontObjects_Inner:SetFont(FONT_PATH, GLOBAL_FONT_SIZE_SMALL, GLOBAL_FONT_FLAGS)
+    for _, fontObj in ipairs(fontObjects_Inner) do
+        if fontObj and fontObj.SetFont then
+            fontObj:SetFont(FONT_PATH, GLOBAL_FONT_SIZE_SMALL, GLOBAL_FONT_FLAGS)
         end
     end
 
