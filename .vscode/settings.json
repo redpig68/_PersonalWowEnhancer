@@ -24,6 +24,7 @@
         "MacroFrame",
         "MacroFrameText",
         "MacroFrameScrollFrame",
-        "GameMenuFrame"
+        "GameMenuFrame",
+        "ExtraAbilityContainer"
     ]
 }

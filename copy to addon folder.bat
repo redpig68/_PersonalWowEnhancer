@@ -1,0 +1,1 @@
+copy /Y _PersonalWowEnhancer.lua "C:\Program Files (x86)\World of Warcraft\_retail_\Interface\AddOns\_PersonalWowEnhancer"
