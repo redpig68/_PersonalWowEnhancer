@@ -23,6 +23,7 @@
         "PlayerFrame",
         "MacroFrame",
         "MacroFrameText",
-        "MacroFrameScrollFrame"
+        "MacroFrameScrollFrame",
+        "GameMenuFrame"
     ]
 }

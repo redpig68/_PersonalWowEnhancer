@@ -3,6 +3,7 @@
 --- 1. 행동단축바의 글씨 크기 변경
 --- 2. 화면에 캐릭터의 이동속도 표시
 --- 3. 대부분의 UI 요소(대화창, 옵션창, 다이얼로그 버튼, 캐릭터 창 등) 글씨 크기 조정
+--- 4. 매크로 편집창(에디트박스) 폰트 크기 변경 기능 추가
 ----------------------------------------------------------------------------------------------------
 
 -- 1. 행동단축바의 글씨 크기 변경
@@ -282,3 +283,37 @@ globalFontFrame:RegisterEvent("PLAYER_LOGIN")
 globalFontFrame:SetScript("OnEvent", function()
     UpdateGlobalUIFont()
 end)
+
+----------------------------------------------------------------------------------------------------
+-- 매크로 편집창(에디트박스) 폰트 크기 변경 기능 추가
+----------------------------------------------------------------------------------------------------
+
+local MACRO_EDITBOX_FONT_SIZE = 14 -- 원하는 크기로 조정
+local MACRO_EDITBOX_FONT_FLAGS = "OUTLINE"
+
+local function UpdateMacroEditBoxFont()
+    -- 기본 매크로 창
+    if MacroFrame and MacroFrameText then
+        MacroFrameText:SetFont(FONT_PATH, MACRO_EDITBOX_FONT_SIZE, MACRO_EDITBOX_FONT_FLAGS)
+    end
+    -- 드래곤플라이트 이후 MacroFrameText가 없을 수 있으니, EditBox를 직접 탐색
+    if MacroFrame and MacroFrame:GetChildren() then
+        for _, child in ipairs({MacroFrame:GetChildren()}) do
+            if child and child:IsObjectType("EditBox") and child.SetFont then
+                child:SetFont(FONT_PATH, MACRO_EDITBOX_FONT_SIZE, MACRO_EDITBOX_FONT_FLAGS)
+            end
+        end
+    end
+end
+
+-- 매크로 창이 열릴 때마다 폰트 적용
+local macroFontFrame = CreateFrame("Frame")
+macroFontFrame:RegisterEvent("PLAYER_LOGIN")
+macroFontFrame:SetScript("OnEvent", function(_, event, addon)
+    if event == "PLAYER_LOGIN" then
+        UpdateMacroEditBoxFont()
+    end
+end)
+
+-- 매크로 창이 열릴 때마다 폰트 재적용(동적 생성 방지)
+hooksecurefunc("ShowMacroFrame", UpdateMacroEditBoxFont)
