@@ -124,20 +124,20 @@ end)
 ----------------------------------------------------------------------------------------------------
 -- 매크로 편집창(에디트박스) 폰트 크기 변경 기능 추가
 ----------------------------------------------------------------------------------------------------
-
+local MACRO_EDITBOX_FONT_PATH = "Fonts\\MACRO.TTF" -- 기본 와우 폰트, 경로는 Interface\AddOns\ 또는 Fonts\ 기준
 local MACRO_EDITBOX_FONT_SIZE = 14 -- 원하는 크기로 조정
 local MACRO_EDITBOX_FONT_FLAGS = "OUTLINE"
 
 local function UpdateMacroEditBoxFont()
     -- 기본 매크로 창
     if MacroFrame and MacroFrameText then
-        MacroFrameText:SetFont(FONT_PATH, MACRO_EDITBOX_FONT_SIZE, MACRO_EDITBOX_FONT_FLAGS)
+        MacroFrameText:SetFont(MACRO_EDITBOX_FONT_PATH, MACRO_EDITBOX_FONT_SIZE, MACRO_EDITBOX_FONT_FLAGS)
     end
     -- 드래곤플라이트 이후 MacroFrameText가 없을 수 있으니, EditBox를 직접 탐색
     if MacroFrame and MacroFrame:GetChildren() then
         for _, child in ipairs({MacroFrame:GetChildren()}) do
             if child and child:IsObjectType("EditBox") and child.SetFont then
-                child:SetFont(FONT_PATH, MACRO_EDITBOX_FONT_SIZE, MACRO_EDITBOX_FONT_FLAGS)
+                child:SetFont(MACRO_EDITBOX_FONT_PATH, MACRO_EDITBOX_FONT_SIZE, MACRO_EDITBOX_FONT_FLAGS)
             end
         end
     end
